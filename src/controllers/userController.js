@@ -45,7 +45,7 @@ export const postLogin = async (req, res) => {
     const pageTitle = "Login";
     const user = await User.findOne({username, socialOnly: false });
     if (!user) {
-        return res.status(400).render("login", {pageTitle, errorMessage:"An account with this username does not exists."})
+        return res.status(400).render("login", {pageTitle, errorMessage:"An account with this username does not exists. please check your username. "})
     }
     const ok = await bcrypt.compare(password, user.password);
     if(!ok) {
@@ -130,10 +130,32 @@ export const startGithubLogin = (req, res) => {
       }
     };
 
-export const edit = (req,res) => res.send("Edit User");
-export const logout = (req, res) => {
-    req.session.destroy(); 
-    return res.redirect("/");
-}
+ export const logout = (req, res) => {
+        req.session.destroy(); 
+        return res.redirect("/");
+    }
+
+export const getEdit = (req,res) => {
+    return res.render("edit-profile", {pageTitle:"Edit Profile"});
+};
+export const postEdit = async (req,res) => {
+    const {
+        session: {
+           user: { _id },
+    }, 
+    body: {name,email,username,location},
+} = req;
+
+   const updatedUser = await User.findByIdAndUpdate(_id, {
+        name,
+        email,
+        username,
+        location,
+    },
+   );
+    req.session.user = updatedUser;
+    return res.redirect("/users/edit");
+};
+
 export const see =(req, res) => res.send("See User");
 
