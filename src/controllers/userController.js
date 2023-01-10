@@ -45,7 +45,7 @@ export const postLogin = async (req, res) => {
     const pageTitle = "Login";
     const user = await User.findOne({username, socialOnly: false });
     if (!user) {
-        return res.status(400).render("login", {pageTitle, errorMessage:"An account with this username does not exists. "})
+        return res.status(400).render("login", {pageTitle, errorMessage:"An account with this username does not exists. Please check again. "})
     }
     const ok = await bcrypt.compare(password, user.password);
     if(!ok) {
