@@ -2,3 +2,5 @@
 /summary.txt
 .env
 /uploads
+.DS_Store
+/assets
