@@ -27,22 +27,8 @@ app.use(
     })
   );
 
-  app.use((req, res, next) => {
-    req.sessionStore.all((error, sessions) => {
-      // console.log(sessions);
-      next();
-    });
-  });
-  
-  app.use(localMiddleware);
-  app.use(flash());
-  app.use("/upload", express.static("upload"));
-  app.use(
-    "/static",
-    express.static("assets"),
-    express.static("node_modules/@ffmpeg/core/dist")
-  );
 
+  
   
 app.use((req, res, next) => {
     res.header("Cross-Origin-Embedder-Policy", "require-corp");
