@@ -5,9 +5,11 @@ import aws from "aws-sdk";
 const s3 = new aws.S3({
     credentials: {
         accessKeyId: process.env.AWS_ID,
-        secretAccessKey: process.env.AWS_SECRET
+        secretAccessKey: process.env.AWS_SECRET,
     }
 })
+
+const isHeroku = process.env.NODE_ENV === "production";
 
 
 const s3ImageUploader = multerS3({
@@ -26,6 +28,7 @@ export const localsMiddleware = (req,res,next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
     res.locals.siteName = "Wetube";
     res.locals.loggedInUser = req.session.user || {} ;
+    res.locals.isHeroku  === isHeroku;
     next();
 }
 
@@ -52,12 +55,12 @@ export const avatarUpload = multer({
     limits: {
         fileSize: 3000000,
     },
-    storage: s3ImageUploader,
+    storage: isHeroku ? s3ImageUploader : underfined,
 });
 export const videoUpload = multer({
     dest: "uploads/videos/",
     limits: {
         fileSize: 10000000,
     },
-    storage: s3VideoUploader,
+    storage: isHeroku ? s3VideoUploader : underfined ,
 });
