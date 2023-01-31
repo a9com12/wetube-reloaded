@@ -13,11 +13,7 @@ const s3 = new aws.S3({
 const multerUploader = multerS3({
     s3:s3,
     bucket: `wetube10`,
-    Condition: {
-        StringEquals: {
-        "s3:x-amz-acl": ["public-read"],
-        },
-        }
+    acl: "public-read",
 });
 
 export const localsMiddleware = (req,res,next) => {
