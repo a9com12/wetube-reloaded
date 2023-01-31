@@ -9,6 +9,7 @@ import videoRouter from './routers/videoRouter';
 import userRouter  from './routers/userRouter';
 import { localsMiddleware } from './middlewares';
 import apiRouter from "./routers/apiRouter";
+import cors from "cors";
 
 const app = express();
 const logger = morgan("dev");
@@ -28,8 +29,8 @@ app.use(
   );
 
 
-  
-  
+
+  app.use(cors());  
 app.use((req, res, next) => {
     res.header("Cross-Origin-Embedder-Policy", "require-corp");
     res.header("Cross-Origin-Opener-Policy", "same-origin");
