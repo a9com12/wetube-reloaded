@@ -45,6 +45,8 @@
     "@babel/core": "^7.20.12",
     "@babel/node": "^7.19.1",
     "@babel/preset-env": "^7.19.4",
+    "@types/bcrypt": "^5.0.0",
+    "@types/node-fetch": "^2.6.2",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "mini-css-extract-plugin": "^2.7.2",

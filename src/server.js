@@ -26,8 +26,6 @@ app.use(
       store: MongoStore.create({mongoUrl: process.env.DB_URL}),
     })
   );
-app.use(flash());  
-app.use(localsMiddleware);
 
 app.use((req, res, next) => {
     res.header("Cross-Origin-Embedder-Policy", "credentialless");
@@ -36,7 +34,8 @@ app.use((req, res, next) => {
     next();
     }); 
   
-
+app.use(flash());  
+app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"))
 app.use("/static", express.static("assets"))
 app.use("/", rootRouter);

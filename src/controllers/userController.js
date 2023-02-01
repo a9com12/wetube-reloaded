@@ -1,6 +1,5 @@
 import User from"../models/User";
-import Video from "../models/Video";
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req,res) => res.render("join", {pageTitle: "Join"});
@@ -156,6 +155,7 @@ export const postEdit = async (req,res) => {
         username,
         location,
     },
+    {new:true}
    );
     req.session.user = updatedUser;
     return res.redirect("/users/edit");
@@ -166,7 +166,7 @@ export const getChangePassword = (req,res) => {
     req.flash("error", "Can't change password.");
       return res.redirect("/");
   }
-return res.render("users/change-password", {pageTitle: "Change Password"})
+return res.render("users/change-password", {pageTitle: "Change Password"});
 }
 
 export const postChangePassword = async (req,res) => {
@@ -179,10 +179,10 @@ body: {oldPassword,newPassword,newPasswordConfirmation},
 const user = await User.findById(_id);
 const ok = await bcrypt.compare(oldPassword, user.password);
 if(!ok) {
-  return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage: "The current password is incorrect."})
+  return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage: "The current password is incorrect.",})
 }
 if(newPassword !== newPasswordConfirmation) {
-  return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage: "The password does not match the confirmation."})
+  return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage: "The password does not match the confirmation.",});
 }
 user.password = newPassword;
 await user.save();
@@ -194,12 +194,18 @@ req.flash("info", "Passwrod updated");
 
 export const see = async (req, res) => {
   const {id} = req.params;
-  const user = await User.findById(id).populate("videos");
+  const user = await User.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
   }
  
-  return res.render("users/profile", {pageTitle: user.name, user,})
+  return res.render("users/profile", {pageTitle: user.name, user,});
 
-}
+};
 

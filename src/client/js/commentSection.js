@@ -1,5 +1,4 @@
 const { async } = require('regenerator-runtime');
-
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 
